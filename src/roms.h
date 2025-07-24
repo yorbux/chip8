@@ -62,5 +62,4 @@ static const uint8_t rom_KeypadTest[] PROGMEM = {
     0x12, 0x64};
 static const uint16_t rom_KeypadTest_size = sizeof(rom_KeypadTest);
 
-void next_rom();
 #endif

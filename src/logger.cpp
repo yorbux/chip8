@@ -2,6 +2,8 @@
 #include <memory>
 #include <string>
 #include "logger.hpp"
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -37,4 +39,10 @@ void log(string message, LogLevel log_level) {
 
 void set_log_level(LogLevel log_level) {
     c_log_level = log_level;
+}
+
+std::string to_hex(uint16_t val) {
+    std::stringstream stream;
+    stream << std::hex << std::uppercase << std::setfill('0') << std::setw(4) << val;
+    return stream.str();
 }

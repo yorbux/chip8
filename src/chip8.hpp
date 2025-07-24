@@ -5,8 +5,6 @@
 #include <chrono>
 #include <cstdint>
 
-#include "cpu.hpp"
-
 #define NUM_KEYS 16
 #define MEMORY 4096
 #define STACK_SIZE 16
@@ -20,8 +18,6 @@
 
 #define SCREEN_WIDTH 64
 #define SCREEN_HEIGHT 32
-
-using clock = std::chrono::high_resolution_clock;
 
 const static uint8_t FONTSET[] = { 
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -42,7 +38,22 @@ const static uint8_t FONTSET[] = {
         0xF0, 0x80, 0xF0, 0x80, 0x80  // F
     };
 
-typedef struct {
+struct Chip8;
+struct Display;
+
+struct Cpu {
+    uint8_t reg[16];
+    uint16_t ireg;
+    uint16_t pcreg;
+    uint16_t sp_reg;
+
+    uint16_t current_op;
+    uint16_t instruction;
+
+    Chip8* machine;
+};
+
+struct Chip8 {
     uint8_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
     uint8_t keys[NUM_KEYS];
     bool key_pressed = false;
@@ -50,7 +61,6 @@ typedef struct {
     uint8_t memory[MEMORY];
     uint16_t stack[STACK_SIZE];
 
-    // timers
     uint8_t delay_timer;
     uint8_t sound_timer;
 
@@ -60,13 +70,13 @@ typedef struct {
 
     Cpu* cpu;
     Display* display;
-    //Sound* sound;
-    //Keyboard* keyboard;
-} Chip8;
+    // Sound* sound;
+    // Keyboard* keyboard;
+};
 
-void chip8_init();
+void chip8_init(std::string rom_path);
 void chip8_run();
 
-void chip8_set_display();
+void chip8_set_display(Display* display);
 
 #endif

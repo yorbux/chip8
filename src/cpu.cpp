@@ -5,10 +5,6 @@
 #include "chip8.hpp"
 #include "logger.hpp"
 
-Cpu cpu;
-
-
-
 /*****************************
  * 0ZE0
  *****************************/
@@ -500,33 +496,20 @@ void decode_F_instruction()
     }
 }
 
-void cpu_init() {
-    cpu.pcreg = 0x200;
-    cpu.current_op = 0;
-    cpu.sp_reg = 0;
-    cpu.ireg = 0;
-    cpu.instruction = 0;
-    
-    // limpia los registros o inicializa en cero
-    for (auto i = 0; i < 16; i++) {
-        cpu.reg[i] = 0;
-    }
-
-    // inicializa el generador random
-    srand(time(0));
-}
-
 void fetch() {
-    cpu.current_op = ((uint16_t)cpu.machine->memory[cpu.pcreg] << 8) | cpu.machine->memory[cpu.pcreg+1];
+    uint16_t opcode = ((uint16_t)cpu.machine->memory[cpu.pcreg] << 8) | cpu.machine->memory[cpu.pcreg + 1];
+    cpu.current_op = opcode;
     cpu.pcreg += 2;
 }
+
+
 
 void decode() {
     cpu.instruction = cpu.current_op >> 12;
 }
 
 void execute() {
-    log("INST " + std::to_string(cpu.instruction), LogLevel::DEBUG);
+    //log("INST " + std::to_string(cpu.instruction), LogLevel::DEBUG);
 
     switch (cpu.instruction) {
         case 0x0: decode_0_instruction(); break;

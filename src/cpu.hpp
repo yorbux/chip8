@@ -4,20 +4,11 @@
 #include <cstdint>
 
 #include "chip8.hpp"
+#include "cpu.hpp"
 
-typedef struct {
-    uint8_t reg[16];
-    uint16_t ireg;
-    uint16_t pcreg;
-    uint16_t sp_reg;
+extern Cpu cpu;
 
-    uint16_t current_op;
-    uint16_t instruction;
-
-    Chip8* machine;
-} Cpu;
-
-void cpu_init();
+//void cpu_init();
 void fetch();
 void decode();
 void execute();

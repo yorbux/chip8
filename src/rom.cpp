@@ -6,13 +6,13 @@ using namespace std;
 
 
 
-void load_rom(string& file_path, u_int8_t* mem) {
+void load_rom(string& file_path, uint8_t* mem) {
     log("Loading ROM: " + file_path, LogLevel::INFO);
 
-    const u_int8_t* pointer = nullptr;
-    u_int32_t size = 0;
+    const uint8_t* pointer = nullptr;
+    uint32_t size = 0;
 
-    switch (file_path.c_str()[0]) {
+    switch (file_path[0]) {
         // set pointer and size
         case 'b': 
             pointer = rom_Breakout1; 
@@ -30,11 +30,12 @@ void load_rom(string& file_path, u_int8_t* mem) {
 
     if (pointer == nullptr || size == 0 || size > (0xFFF - 0x200)) {
         log("No se puede cargar la ROM", LogLevel::ERROR);
-        exit(1);
         return;
     }
 
-    memcpy(mem, pointer, size);
+    for (uint32_t i = 0; i < size; i++) {
+        mem[i] = pgm_read_byte(&(pointer[i]));
+    }
     log("Rom cargada", LogLevel::INFO);
 }
 
@@ -47,6 +48,6 @@ void next_rom(void) {
     }
 
     log("Cambiando rom a: " + roms[c_rom], LogLevel::WARN);
-    
+    chip8_init(roms[c_rom]);
     c_rom++;
 }

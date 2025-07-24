@@ -1,14 +1,37 @@
 #include <iostream>
+#include <chrono>
+
 
 #include "chip8.hpp"
 #include "cpu.hpp"
 #include "rom.hpp"
+#include "display.hpp"
 
 using namespace std;
 
 Chip8 chip8;
+Cpu cpu;
+
+void cpu_init() {
+    cpu.pcreg = 0x200;
+    cpu.current_op = 0;
+    cpu.sp_reg = 0;
+    cpu.ireg = 0;
+    cpu.instruction = 0;
+    
+    // limpia los registros o inicializa en cero
+    for (auto i = 0; i < 16; i++) {
+        cpu.reg[i] = 0;
+    }
+
+    // inicializa el generador random
+    srand(time(0));
+}
 
 void chip8_init(string rom_path) {
+    chip8.cpu = &cpu;
+    chip8.cpu->machine = &chip8;
+
     // Clear frame buffer
     for(auto i = 0; i < SCREEN_HEIGHT; i++)
         for(auto j = 0; j < SCREEN_WIDTH; j++)
@@ -35,13 +58,19 @@ void chip8_init(string rom_path) {
         chip8.keys[i] = 0;
 
     chip8.key_pressed = false;
-    
+    chip8.emulator_running = true;
+
     // Init cpu registers
     cpu_init();
     
     // Load ROM to the ram
     load_rom(rom_path, chip8.memory+PROGRAM_START_ADDR);
-    
+    //for (int i = 0; i < 16; i++) {
+    //    printf("%02X ", chip8.memory[0x200 + i]);
+    //}
+    //printf("\n");
+
+
     // Initialize display lib
     d_init();
 
@@ -52,16 +81,19 @@ void chip8_init(string rom_path) {
     //keyboard_init();
 }
 
+
 void chip8_run() {
     if (!chip8.emulator_running) {
         return;
     }
 
+    using clock = chrono::high_resolution_clock;
     clock::time_point start = clock::now(), end;
 
     // funciones de la cpu
     fetch();
     decode();
+    //log("Fetched opcode: 0x" + to_hex(chip8.cpu->current_op), LogLevel::DEBUG);
     execute();
 
     if (chip8.tick_counter >= 20) {
@@ -91,6 +123,6 @@ void chip8_run() {
     }
 }
 
-void chip8_set_display(Display display) {
+void chip8_set_display(Display* display) {
     chip8.display = display;
 }

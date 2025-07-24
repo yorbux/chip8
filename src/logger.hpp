@@ -15,5 +15,6 @@ enum LogLevel {
 
 void log(std::string message, LogLevel log_level);
 void set_log_level(LogLevel log_level);
+std::string to_hex(uint16_t val);
 
 #endif
