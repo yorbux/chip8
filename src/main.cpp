@@ -2,6 +2,8 @@
 
 #include "config.hpp"
 #include "logger.hpp"
+#include "keyboard.hpp"
+#include "sound.hpp"
 #include "rom.hpp"
 #include "chip8.hpp"
 #include "U8g2lib.h"

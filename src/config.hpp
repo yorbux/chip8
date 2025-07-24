@@ -7,6 +7,7 @@
 
 #include "chip8.hpp"
 #include "cpu.hpp"
+#include "keyboard.hpp"
 
 #define BTN_NEXT_ROM_PIN GPIO_NUM_5
 
@@ -18,6 +19,8 @@ extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C oled;
 extern Display display;
 
 extern uint16_t kbpins[];
+extern EspKeyboard keyboard;
+extern uint8_t key_map[];
 
 void init_globals();
 

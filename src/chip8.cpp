@@ -6,6 +6,9 @@
 #include "cpu.hpp"
 #include "rom.hpp"
 #include "display.hpp"
+#include "config.hpp"
+#include "sound.hpp"
+#include "keyboard.hpp"
 
 using namespace std;
 
@@ -74,13 +77,10 @@ void chip8_init(string rom_path) {
     // Initialize display lib
     d_init();
 
-    // Initialize sound lib
-    //sound_init();
-  
-    // Initialize keyboard lib
-    //keyboard_init();
-}
+    EspSound_init();
 
+    k_init();
+}
 
 void chip8_run() {
     if (!chip8.emulator_running) {
@@ -96,6 +96,8 @@ void chip8_run() {
     //log("Fetched opcode: 0x" + to_hex(chip8.cpu->current_op), LogLevel::DEBUG);
     execute();
 
+    k_update(chip8.keys, &chip8.emulator_running);
+
     if (chip8.tick_counter >= 20) {
         chip8.tick_counter = 0;
         d_draw(chip8.screen, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -107,9 +109,9 @@ void chip8_run() {
 
         if (chip8.sound_timer > 0) {
             chip8.sound_timer--;
-            //s_play_tune();
+            EspSound_playTune();
         } else {
-            //s_pause_tune();
+            EspSound_pauseTune();
         }
     }
 
