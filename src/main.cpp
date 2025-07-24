@@ -4,6 +4,10 @@
 
 void setup() {
     pinMode(BTN_NEXT_ROM_PIN, INPUT_PULLUP);
+
+    set_log_level(LogLevel::INFO);
+
+    
 }
 
 void loop() {
