@@ -1,18 +1,13 @@
-#include <Arduino.h>
-
-// put function declarations here:
-int myFunction(int, int);
+#include "Arduino.h"
+#include "config.hpp"
+#include "rom.hpp"
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+    pinMode(BTN_NEXT_ROM_PIN, INPUT_PULLUP);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+    if (!digitalRead(BTN_NEXT_ROM_PIN)) {
+        next_rom();
+    }
 }
