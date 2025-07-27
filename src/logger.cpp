@@ -7,7 +7,9 @@
 
 using namespace std;
 
+/// incializa el nivel del logger en debug
 static LogLevel c_log_level = LogLevel::DEBUG;
+
 
 void log(string message, LogLevel log_level) {
     string buffer = "";
@@ -37,9 +39,11 @@ void log(string message, LogLevel log_level) {
     cout << buffer;
 }
 
+
 void set_log_level(LogLevel log_level) {
     c_log_level = log_level;
 }
+
 
 std::string to_hex(uint16_t val) {
     std::stringstream stream;

@@ -12,6 +12,5 @@ extern Cpu cpu;
 void fetch();
 void decode();
 void execute();
-void deinit();
 
 #endif

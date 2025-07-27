@@ -6,7 +6,6 @@
 #include "cpu.hpp"
 #include "rom.hpp"
 #include "display.hpp"
-#include "config.hpp"
 #include "sound.hpp"
 #include "keyboard.hpp"
 
@@ -77,7 +76,7 @@ void chip8_init(string rom_path) {
     // Initialize display lib
     d_init();
 
-    EspSound_init();
+    s_init();
 
     k_init();
 }
@@ -109,9 +108,9 @@ void chip8_run() {
 
         if (chip8.sound_timer > 0) {
             chip8.sound_timer--;
-            EspSound_playTune();
+            s_playTune();
         } else {
-            EspSound_pauseTune();
+            s_pauseTune();
         }
     }
 
@@ -123,8 +122,4 @@ void chip8_run() {
     if (sleep_time > 0) {
         delayMicroseconds(sleep_time);
     }
-}
-
-void chip8_set_display(Display* display) {
-    chip8.display = display;
 }

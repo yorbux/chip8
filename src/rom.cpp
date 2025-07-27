@@ -1,10 +1,12 @@
-#include "config.hpp"
 #include "logger.hpp"
+#include "chip8.hpp"
+#include "rom.hpp"
 #include "roms.h"
 
 using namespace std;
 
-
+std::string roms[] = {"l", "b", "p", "t"};
+u_int8_t c_rom = 1;
 
 void load_rom(string& file_path, uint8_t* mem) {
     log("Loading ROM: " + file_path, LogLevel::INFO);
@@ -22,10 +24,13 @@ void load_rom(string& file_path, uint8_t* mem) {
             pointer = rom_Pong1; 
             size = rom_Pong1_size; 
             break;
-        case 'm': 
-            pointer = rom_Maze1; 
-            size = rom_Maze1_size; 
+        case 't': 
+            pointer = tetris; 
+            size = tetris_size; 
             break;
+        case 'l':
+            pointer = ibm_logo;
+            size = ibm_logo_size;
     }
 
     if (pointer == nullptr || size == 0 || size > (0xFFF - 0x200)) {
